@@ -30,6 +30,8 @@ public class AddWord extends AppCompatActivity {
                 DatabaseReference reference = databaseReference.child("words").push();
                 value = value.toUpperCase();
                 reference.setValue(value);
+                Toast.makeText(getApplicationContext(), "Word Added to DB", Toast.LENGTH_LONG).show();
+                inputText.setText("");
             }
             else{
                 Toast.makeText(getApplicationContext(), "Invalid Word", Toast.LENGTH_LONG).show();

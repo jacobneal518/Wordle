@@ -61,7 +61,13 @@ public class MainActivity extends AppCompatActivity {
             }
             else{
                 currentRow++;
-                revealNextRow();
+                if(currentRow >= 7){
+                    Toast.makeText(getApplicationContext(), "You Lose!", Toast.LENGTH_LONG).show();
+
+                }
+                else{
+                    revealNextRow();
+                }
             }
         }
     };
@@ -79,7 +85,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             letters.clear();
-            //todo create new solution from db
+            Collections.shuffle(solutions);
+            solution = solutions.get(0);
             currentRow = 1;
             revealNextRow();
         }
@@ -145,19 +152,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        letters = new HashMap<>();
-
-        //make hashmap to track what letters are in our solution
-        for(int i = 0; i < solution.length(); i++){
-            char letter = solution.substring(i, i+1).toCharArray()[0];
-            if(letters.containsKey(letter)){
-                letters.put(letter, letters.get(letter) + 1);
-            }
-            else{
-                letters.put(letter, 1);
-            }
-        }
-
         currentRow = 1;
 
         setContentView(R.layout.activity_main);
@@ -198,6 +192,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean checkSubmission(){
+
+        letters = new HashMap<>();
+
+        //make hashmap to track what letters are in our solution
+        for(int i = 0; i < solution.length(); i++){
+            char letter = solution.substring(i, i+1).toCharArray()[0];
+            if(letters.containsKey(letter)){
+                letters.put(letter, letters.get(letter) + 1);
+            }
+            else{
+                letters.put(letter, 1);
+            }
+        }
+
         int correctGuesses = 0;
         HashMap<Character, Integer> correctLetters = new HashMap<>(letters);
         HashMap<Character, Integer> guessLetters = new HashMap<>();
@@ -206,38 +214,75 @@ public class MainActivity extends AppCompatActivity {
 
             //i + 1 to account for index offset
             //currentRow * 5 is the 5 cells of the next allowed row
-            if(i + 1 <= currentRow * 5){
+            if(i + 1 <= currentRow * 5 && i + 1 > (currentRow - 1) * 5){
                 // Check if the current view is an EditText
                 if (text instanceof EditText) {
                     EditText editText = (EditText) text;
-
                     String stringLetter = editText.getText().toString();
-                    char letter = stringLetter.toCharArray()[0];
-
-                    //decrement count of letter in hashmap
-                    if(guessLetters.containsKey(letter)){
-                        guessLetters.put(letter, guessLetters.get(letter) + 1);
-                    }
-                    else{
-                        guessLetters.put(letter, 1);
+                    char letter = ' ';
+                    if(stringLetter.length() > 0){
+                        letter = stringLetter.toCharArray()[0];
                     }
 
                     //check if correct letter + placement
                     if(stringLetter.equals(solution.substring(i % 5, i % 5 + 1))){
                         text.setBackgroundColor(getResources().getColor(R.color.green));
-                        //if we are on the latest entry row
-                        if(i + 1 > (currentRow - 1) * 5){
-                            correctGuesses++;
+                        //decrement count of letter in hashmap
+                        if(guessLetters.containsKey(letter)){
+                            guessLetters.put(letter, guessLetters.get(letter) + 1);
+                        }
+                        else{
+                            guessLetters.put(letter, 1);
+                        }
+                        correctGuesses++;
+                    }
+                }
+            }
+        }
+
+        for(int i = 0; i < grid.getChildCount(); i++){
+            View text = grid.getChildAt(i);
+
+            //i + 1 to account for index offset
+            //currentRow * 5 is the 5 cells of the next allowed row
+            if(i + 1 <= currentRow * 5 && i + 1 > (currentRow - 1) * 5){
+                // Check if the current view is an EditText
+                if (text instanceof EditText) {
+                    EditText editText = (EditText) text;
+                    String stringLetter = editText.getText().toString();
+                    char letter = ' ';
+                    if(stringLetter.length() > 0){
+                        letter = stringLetter.toCharArray()[0];
+                    }
+
+                    //check if correct letter + placement
+                    //check if correct letter + placement
+                    Log.i("GridColors", "Guess Letters: " + guessLetters.toString());
+                    Log.i("GridColors", "Correct Letters: " + correctLetters.toString());
+
+                    if(stringLetter.equals(solution.substring(i % 5, i % 5 + 1))){
+                        //do nothing
+                    }
+                    //if not green
+                    else{
+                        //add guess to hash map
+                        if(guessLetters.containsKey(letter)){
+                            guessLetters.put(letter, guessLetters.get(letter) + 1);
+                        }
+                        else{
+                            guessLetters.put(letter, 1);
+                        }
+                        //check grey and yellow
+                        if(correctLetters.containsKey(letter) && guessLetters.get(letter) != null && correctLetters.get(letter) != null && guessLetters.get(letter) <= correctLetters.get(letter)){
+                            text.setBackgroundColor(getResources().getColor(R.color.yellow));
+                            Log.i("GridColors", "Assigning letter: " + letter + " yellow because guessLetters: " + guessLetters.get(letter) + " correctLetters: " + correctLetters.get(letter));
+                        }
+                        else{
+                            Log.i("GridColors", "Assigning letter: " + letter + " grey because guessLetters: " + guessLetters.get(letter) + " correctLetters: " + correctLetters.get(letter));
+                            text.setBackgroundColor(getResources().getColor(R.color.grey));
                         }
                     }
-                    else if(!correctLetters.containsKey(letter) || (guessLetters.get(letter) != null && correctLetters.get(letter) != null && guessLetters.get(letter) > correctLetters.get(letter))){
-                        text.setBackgroundColor(getResources().getColor(R.color.grey));
-                        Log.i("GridColors", "Assigning letter: " + letter + " grey because guessLetters: " + guessLetters.get(letter) + " correctLetters: " + correctLetters.get(letter));
-                    }
-                    else{
-                        Log.i("GridColors", "Assigning letter: " + letter + " yellow because guessLetters: " + guessLetters.get(letter) + " correctLetters: " + correctLetters.get(letter));
-                        text.setBackgroundColor(getResources().getColor(R.color.yellow));
-                    }
+
                 }
             }
         }
