@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "285134315769",
+    "firebase_url": "https://wordle-afbae-default-rtdb.firebaseio.com",
+    "project_id": "wordle-afbae",
+    "storage_bucket": "wordle-afbae.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:285134315769:android:d4a9a43cbae3a6b2480228",
+        "android_client_info": {
+          "package_name": "com.example.wordle"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCG2h99Un3GvLL2IrcPQaT91KBVvldKEfE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

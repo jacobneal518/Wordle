@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <GridLayout
+        android:id="@+id/wordleGrid"
+        android:layout_width="411dp"
+        android:layout_height="495dp"
+        android:layout_gravity="center"
+        android:columnCount="5"
+        android:rowCount="6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText style="@style/GridLayoutEditText" />
+
+        <EditText style="@style/GridLayoutEditText" />
+
+        <EditText style="@style/GridLayoutEditText" />
+
+        <EditText style="@style/GridLayoutEditText" />
+
+        <EditText style="@style/GridLayoutEditText" />
+
+        <EditText style="@style/GridLayoutEditText" />
+
+        <EditText style="@style/GridLayoutEditText" />
+
+        <EditText style="@style/GridLayoutEditText" />
+
+        <EditText style="@style/GridLayoutEditText" />
+
+        <EditText style="@style/GridLayoutEditText" />
+
+        <EditText style="@style/GridLayoutEditText" />
+
+        <EditText style="@style/GridLayoutEditText" />
+
+        <EditText style="@style/GridLayoutEditText" />
+
+        <EditText style="@style/GridLayoutEditText" />
+
+        <EditText style="@style/GridLayoutEditText" />
+
+        <EditText style="@style/GridLayoutEditText" />
+
+        <EditText style="@style/GridLayoutEditText" />
+
+        <EditText style="@style/GridLayoutEditText" />
+
+        <EditText style="@style/GridLayoutEditText" />
+
+        <EditText style="@style/GridLayoutEditText" />
+
+        <EditText style="@style/GridLayoutEditText" />
+
+        <EditText style="@style/GridLayoutEditText" />
+
+        <EditText style="@style/GridLayoutEditText" />
+
+        <EditText style="@style/GridLayoutEditText" />
+
+        <EditText style="@style/GridLayoutEditText" />
+
+        <EditText style="@style/GridLayoutEditText" />
+
+        <EditText style="@style/GridLayoutEditText" />
+
+        <EditText style="@style/GridLayoutEditText" />
+
+        <EditText style="@style/GridLayoutEditText" />
+
+        <EditText style="@style/GridLayoutEditText" />
+
+
+    </GridLayout>
+
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="34dp"
+        android:layout_marginTop="42dp"
+        android:text="Submit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wordleGrid" />
+
+    <Button
+        android:id="@+id/restartButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="40dp"
+        android:text="Restart"
+        app:layout_constraintStart_toEndOf="@+id/submitButton"
+        app:layout_constraintTop_toBottomOf="@+id/wordleGrid" />
+
+    <Button
+        android:id="@+id/clearButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="40dp"
+        android:text="Clear"
+        app:layout_constraintStart_toEndOf="@+id/submitButton"
+        app:layout_constraintTop_toBottomOf="@+id/wordleGrid" />
+
+    <Button
+        android:id="@+id/newActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="32dp"
+        android:text="Add Word"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/clearButton" />
+</androidx.constraintlayout.widget.ConstraintLayout>
