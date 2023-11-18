@@ -24,6 +24,7 @@ public class AddWord extends AppCompatActivity {
     View.OnClickListener addWordListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            //add value to db
             String value = inputText.getText().toString();
 
             if(value.length() == 5 && value.matches("[a-zA-Z]+")){

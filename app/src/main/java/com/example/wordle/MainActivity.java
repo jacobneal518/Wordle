@@ -53,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
 
     HashMap<Character, Integer> letters;
 
+    /**
+     * Logic for submit button
+     */
     View.OnClickListener submitListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -72,18 +75,22 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * Logic for restart
+     */
     View.OnClickListener restartListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             for(int i = 0; i < grid.getChildCount(); i++){
                 View text = grid.getChildAt(i);
-
+                //clear out fields
                 if (text instanceof EditText) {
                     EditText editText = (EditText) text;
                     editText.setBackground(defaultEditTextBackground);
                     editText.setText("");
                 }
             }
+            //get new solution
             letters.clear();
             Collections.shuffle(solutions);
             solution = solutions.get(0);
@@ -92,6 +99,9 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * logic for clear button
+     */
     View.OnClickListener clearListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -127,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
         solutions = new ArrayList<>();
         solution = "TESTS";
 
+        //get solution from FB database
         myRef = FirebaseDatabase.getInstance().getReference();
 
         myRef.child("words").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -142,9 +153,10 @@ public class MainActivity extends AppCompatActivity {
 
                     for(DataSnapshot temp : snapshot.getChildren()){
                         Log.d("firebase", "imma kill myself cause: " + temp.getValue(String.class));
+                        //add all options to array list
                         solutions.add(temp.getValue(String.class));
                     }
-
+                    //pick random solution
                     Collections.shuffle(solutions);
 
                     solution = solutions.get(0);
@@ -209,14 +221,15 @@ public class MainActivity extends AppCompatActivity {
         int correctGuesses = 0;
         HashMap<Character, Integer> correctLetters = new HashMap<>(letters);
         HashMap<Character, Integer> guessLetters = new HashMap<>();
+        //check for greens
         for(int i = 0; i < grid.getChildCount(); i++){
             View text = grid.getChildAt(i);
 
-            //i + 1 to account for index offset
-            //currentRow * 5 is the 5 cells of the next allowed row
+            //iterate through only the last row submitted
             if(i + 1 <= currentRow * 5 && i + 1 > (currentRow - 1) * 5){
                 // Check if the current view is an EditText
                 if (text instanceof EditText) {
+                    //get edit text
                     EditText editText = (EditText) text;
                     String stringLetter = editText.getText().toString();
                     char letter = ' ';
@@ -227,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
                     //check if correct letter + placement
                     if(stringLetter.equals(solution.substring(i % 5, i % 5 + 1))){
                         text.setBackgroundColor(getResources().getColor(R.color.green));
-                        //decrement count of letter in hashmap
+                        //update guess hashmap
                         if(guessLetters.containsKey(letter)){
                             guessLetters.put(letter, guessLetters.get(letter) + 1);
                         }
@@ -240,6 +253,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        //check for yellow + grey
         for(int i = 0; i < grid.getChildCount(); i++){
             View text = grid.getChildAt(i);
 
@@ -254,11 +268,6 @@ public class MainActivity extends AppCompatActivity {
                     if(stringLetter.length() > 0){
                         letter = stringLetter.toCharArray()[0];
                     }
-
-                    //check if correct letter + placement
-                    //check if correct letter + placement
-                    Log.i("GridColors", "Guess Letters: " + guessLetters.toString());
-                    Log.i("GridColors", "Correct Letters: " + correctLetters.toString());
 
                     if(stringLetter.equals(solution.substring(i % 5, i % 5 + 1))){
                         //do nothing
